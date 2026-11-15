@@ -13,7 +13,6 @@ var searchRouter = require("./routers/RouterSearch.js");
 var favRouter = require("./routers/RouterFav.js");
 var userRouter=require("./routers/RouterUser");
 var ratingRouter = require("./routers/RouterRating.js");
-const jwt = require("jsonwebtoken");
 
 let server = express();
 server.set('trust proxy', 1);
