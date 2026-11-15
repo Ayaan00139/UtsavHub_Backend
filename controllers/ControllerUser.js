@@ -186,13 +186,14 @@ async function doSignup(req, resp) {
 
     };
 
-    // Attempt sending email with dedicated logging
-    try {
-      let mailSend = await transporter.sendMail(mailOption);
-      console.log("[ControllerSignup] Welcome email sent successfully:", mailSend.messageId);
-    } catch (mailError) {
-      console.error("[ControllerSignup] Mail sending failed:", mailError.message || mailError);
-    }
+    // Attempt sending email asynchronously in background so response isn't blocked
+    transporter.sendMail(mailOption)
+      .then(mailSend => {
+        console.log("[ControllerSignup] Welcome email sent successfully:", mailSend.messageId);
+      })
+      .catch(mailError => {
+        console.error("[ControllerSignup] Mail sending failed:", mailError.message || mailError);
+      });
 
     return resp.json({
       status: true,
