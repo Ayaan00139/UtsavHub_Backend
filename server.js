@@ -18,25 +18,14 @@ let server = express();
 server.set('trust proxy', 1);
 
 // Middlewares
-const clientUrl = process.env.CLIENT_URL ? process.env.CLIENT_URL.replace(/\/+$/, "") : null;
-
 const allowedOrigins = [
-  clientUrl,
-  'https://utsavhub01.vercel.app'
+  process.env.CLIENT_URL
 ].filter(Boolean);
 
 server.use(cors({
   origin: function (origin, callback) {
-    // Allow server-to-server, curl, or mobile requests with no origin
-    if (!origin) return callback(null, true);
-
-    const normalizedOrigin = origin.replace(/\/+$/, "");
-    const isAllowed =
-      allowedOrigins.some(allowed => allowed.replace(/\/+$/, "") === normalizedOrigin) ||
-      normalizedOrigin.endsWith(".vercel.app") ||
-      process.env.NODE_ENV !== 'production';
-
-    if (isAllowed) {
+    // Allow requests with no origin (like server-to-server or tools) or if in allowedOrigins
+    if (!origin || allowedOrigins.includes(origin) || process.env.NODE_ENV !== 'production') {
       callback(null, true);
     } else {
       callback(new Error(`CORS blocked for origin: ${origin}`));
