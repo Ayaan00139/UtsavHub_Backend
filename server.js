@@ -62,7 +62,7 @@ let PORT = process.env.PORT || 2010;
 server.listen(PORT, function () {
   console.log(`====================================================`);
   console.log(`🚀 UtsavHub Backend Server Running on Port ${PORT}`);
-  console.log(`📡 Client URL: ${process.env.CLIENT_URL || 'http://localhost:3000'}`);
+  console.log(`📡 Client URL: ${process.env.CLIENT_URL}`);
   console.log(`🔒 Security: Helmet & FileUpload limits active (5MB)`);
   console.log(`====================================================`);
 });
