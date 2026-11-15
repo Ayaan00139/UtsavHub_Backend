@@ -18,21 +18,7 @@ let server = express();
 server.set('trust proxy', 1);
 
 // Middlewares
-const allowedOrigins = [
-  process.env.CLIENT_URL
-].filter(Boolean);
-
-server.use(cors({
-  origin: function (origin, callback) {
-    // Allow requests with no origin (like server-to-server or tools) or if in allowedOrigins
-    if (!origin || allowedOrigins.includes(origin) || process.env.NODE_ENV !== 'production') {
-      callback(null, true);
-    } else {
-      callback(new Error(`CORS blocked for origin: ${origin}`));
-    }
-  },
-  credentials: true
-}));
+server.use(cors({ origin: true, credentials: true }));
 server.use(helmet());
 server.use(cookieParser());
 server.use(fileuploader({
