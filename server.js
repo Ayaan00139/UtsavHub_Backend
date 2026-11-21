@@ -42,22 +42,6 @@ server.use("/fav", favRouter);
 server.use("/user",userRouter);
 server.use("/rating", ratingRouter);
 
-// Serve Frontend static assets and handle SPA routes on port 2010
-const fs = require("fs");
-const frontendDistPath = path.join(__dirname, "../FrontEnd/dist");
-if (fs.existsSync(frontendDistPath)) {
-  server.use(express.static(frontendDistPath));
-}
-
-server.get(["/forgotpassword", "/forgetpassword", "/login", "/signup"], function (req, res) {
-  const indexFile = path.join(__dirname, "../FrontEnd/dist/index.html");
-  if (fs.existsSync(indexFile)) {
-    return res.sendFile(indexFile);
-  }
-  const clientUrl = process.env.CLIENT_URL || 'http://localhost:3000';
-  res.redirect(`${clientUrl}${req.originalUrl}`);
-});
-
 let PORT = process.env.PORT || 2010;
 server.listen(PORT, function () {
   console.log(`====================================================`);
